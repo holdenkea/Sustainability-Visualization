@@ -1558,3 +1558,5 @@ timestamp,location,value,unit
 2024-11-10 23:45:00,Nichols Hall Total CHW BTU Meter Usage (C) / p:sonomastate:r:234e3ee2-b06b6c8c,0.0,BTU
 2024-11-10 23:45:00,Student Center Total HHW BTU Meter Usage (C) / p:sonomastate:r:234e5dff-8d8eb031,19298.4765625,BTU
 2024-11-10 23:45:00,Ives Hall  Total Electric Meter Usage (C) / p:sonomastate:r:206d9425-f3361ab6,0.0,kWh
+2024-11-11 23:45:00,Ives Hall  Total Electric Meter Usage (C) / p:sonomastate:r:206d9425-f3361ab6,2000000,kWh
+2024-11-12 23:45:00,Rachel Carson Hall Total HHW BTU Meter Usage (C) / p:sonomastate:r:206d9425-f3361ab6,1000000,kWh
