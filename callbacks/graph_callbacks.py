@@ -1,6 +1,7 @@
 from dash import Input, Output, callback
 import plotly.express as px
 from data.csv_source import df
+from data.constants import timestamp_options
 
 import plotly.graph_objects as go
 
@@ -28,13 +29,22 @@ def normalize_pixels(x, y, img_w=791, img_h=791):
     Output('graph2', 'figure'),
     Output('graph3', 'figure'),
     Input('location-filter', 'value'),
-    Input('unit-filter', 'value')
+    Input('unit-filter', 'value'),
+    Input('timestamp-filter', 'value')
 )
-def update_graphs(selected_locations, selected_units):
-    
+def update_graphs(selected_locations, selected_units, selected_timestamps):
+
+    # unpacking tuple of selected timestamp indices and mapping to corresponding dates
+    start_idx, end_idx = selected_timestamps
+    start_date = timestamp_options[start_idx]
+    end_date = timestamp_options[end_idx]
+
     # filter dataframe based on filters selected
     filtered_df = df[
-        (df['location'].isin(selected_locations)) & (df['unit'].isin(selected_units))
+        (df['location'].isin(selected_locations)) & 
+        (df['unit'].isin(selected_units)) &
+        (df['date_only'] >= start_date) &
+        (df['date_only'] <= end_date)
     ]
 
     # group by location and sum up value
