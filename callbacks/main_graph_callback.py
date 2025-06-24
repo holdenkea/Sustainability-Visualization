@@ -203,7 +203,7 @@ def update_figure3(aggregated_df):
     figure3 = px.pie(
         aggregated_df,
         names='truncated_location',
-        values='value',
+        values='energy_usage',
         title='Percent of Energy Used by Location',
         hole=0.5,
         hover_name='location'
