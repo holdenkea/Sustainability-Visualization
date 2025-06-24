@@ -1,2 +1,3 @@
 __pycache__/
 dash_venv/
+sql_credentials.py

@@ -24,10 +24,10 @@ default_units = ['kWh']
 timestamp_options = []
 
 # convert to datetime
-df['timestamp'] = pd.to_datetime(df['timestamp'])
+df['time_stamp'] = pd.to_datetime(df['time_stamp'])
 
 # take out only date
-df['date_only'] = df['timestamp'].dt.date
+df['date_only'] = df['time_stamp'].dt.date
 
 # get unique dates
 timestamp_options = sorted(df['date_only'].unique())

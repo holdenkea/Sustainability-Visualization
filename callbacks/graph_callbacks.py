@@ -47,8 +47,12 @@ def update_graphs(selected_locations, selected_units, selected_timestamps):
         (df['date_only'] <= end_date)
     ]
 
+    if filtered_df.empty:
+        print("⚠️ Filtered DataFrame is empty — returning blank figures.")
+        return go.Figure(), go.Figure(), go.Figure()
+
     # group by location and sum up value
-    aggregated_df = filtered_df.groupby('location', as_index=False)['value'].sum()
+    aggregated_df = filtered_df.groupby('location', as_index=False)['energy_usage'].sum()
 
     # truncate location name for display
     aggregated_df['truncated_location'] = aggregated_df['location'].apply(truncate_name)
@@ -84,10 +88,10 @@ def update_graphs(selected_locations, selected_units, selected_timestamps):
     # plotly bar graph for graph2
     figure2 = px.bar(
         aggregated_df,
-        x='value',
+        x='energy_usage',
         y='truncated_location',
         title='Sum of Energy Consumption by Location',
-        labels={'value': 'Sum of Value', 'location': 'Location'},
+        labels={'energy_usage': 'Sum of Value', 'location': 'Location'},
         template='plotly_white',
         hover_name='location'    
     )
@@ -96,7 +100,7 @@ def update_graphs(selected_locations, selected_units, selected_timestamps):
     figure3 = px.pie(
         aggregated_df,
         names='truncated_location',
-        values='value',
+        values='energy_usage',
         title='Percent of Energy Used by Location',
         hole=0.5,
         hover_name='location'
