@@ -38,4 +38,13 @@ filters = html.Div([
             tooltip={"placement": "bottom", "always_visible": False}
         )
     ])
+
+    # import python data
+
+    # dcc.DatePickerRange(
+        # is_RLT=true,
+        # first_day_of_week=python.today'sdate,
+        # start_date=date
+    # )
+
 ])
