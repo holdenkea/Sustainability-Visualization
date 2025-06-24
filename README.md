@@ -7,7 +7,7 @@ python -m venv dash_venv
 .\dash_venv\Scripts\Activate
 
 # install dependencies
-pip install requirements.txt
+pip install -r requirements.txt
 
 # run 
 python index.py
