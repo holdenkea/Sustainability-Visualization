@@ -5,13 +5,13 @@ from layouts.homepage.graphs_layout import graphs
 from layouts.homepage.filters import filters
 
 layout = html.Div([
-    html.H1("SSU Energy Usage", style={
+    html.H1("Energy Dashboard", style={
             'fontFamily': '"Orbitron", "Segoe UI", sans-serif',
             'textAlign': 'left',
-            'marginLeft': '50px',  
+            'marginLeft': '25px',  
             'marginTop': '10px',
             'marginBottom': '10px',
-            'height': '50px'
+            'height': '35px'
         }),
 
     # flex container for main dashboards (left), and sidebar (right)
