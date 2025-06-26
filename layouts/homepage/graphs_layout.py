@@ -1,14 +1,35 @@
 from dash import html, dcc
 
 # empty placeholder graphs
-graph1 = dcc.Graph(id='graph1', style={'height': '100%', 'width': '100%'})
-graph2 = dcc.Graph(id='graph2')
-graph3 = dcc.Graph(id='graph3')
+graph1 = dcc.Graph(id='graph1', style={'height': '100%', 'width' : '100%', 'maxWidth': '100%'}, config={'responsive': True})
+graph2 = dcc.Graph(id='graph2', style={'height': '100%', 'width' : '100%', 'maxWidth': '100%'}, config={'responsive': True})
+graph3 = dcc.Graph(id='graph3', style={'height': '100%', 'width' : '100%', 'maxWidth': '100%'}, config={'responsive': True})
+
+
+#graph2 = dcc.Graph(id='graph2')
+#graph3 = dcc.Graph(id='graph3')
 
 graphs = html.Div([
+
+    # button to toggle sidebar start position
+    html.Button("Map Settings", id="map-sidebar-btn", n_clicks=0, style={
+        'position': 'absolute',
+        'left' : '390px',
+        'top' : '93px',
+        'height': '50px',
+        'backgroundColor': "#2a3f5c",
+        'color': 'white',
+        'cursor': 'pointer',
+        'boxShadow': '0 2px 6px rgba(0,0,0,0.3)',
+        'zIndex': '1001',
+        'transition': 'right 0.3s ease',
+    }),
+
     # graph 1 and sidebar
     html.Div([
+
         html.Div([
+
             html.Label("Map Overlay Type"),
             dcc.RadioItems(
                 id='map-overlay-type',
@@ -20,25 +41,40 @@ graphs = html.Div([
                 labelStyle={'display' : 'block'},
                 style={'marginBottom': '10px'}
             )
-        ], style={'width': '200px', 'padding': '10px', 'backgroundColor' : "#3c3c81"}),
+        ], id="sidebar", style={
+            'position' : 'relative',
+            'width': '0px', 
+            'padding': '0px',
+            'opacity': '0',
+            'backgroundColor' : "#242430"
+        }),
+        html.Div(graph1, style={
+                'flex': 1,
+                'minWidth': 0
+            }
+        )
 
-        dcc.Graph(id='graph1', style={'flex': 1})
-    ], style= {
+    ], style={
         'gridArea': 'graph1',
         'display': 'flex',
         'flexDirection': 'row',
-        'gap': '10px',
+        'gap': '10px'
     }),
+    
 
     # graph 2
-    html.Div(graph2, style={
-        'gridArea': 'graph2',
-    }),
+    html.Div(
+        html.Div(graph2, style={'height': '100%'}),
+        style={'gridArea': 'graph2',
+               'height' : '100%'}
+    ),
 
     # graph 3
-    html.Div(graph3, style={
-        'gridArea': 'graph3',
-    }),
+    html.Div(
+        html.Div(graph3, style={'height': '100%'} ),
+        style={'gridArea': 'graph3',
+               'height' : '100%'}
+    ),
 ], style={
     'display': 'grid',
     'gridTemplateColumns': '2fr 1fr',
@@ -48,6 +84,6 @@ graphs = html.Div([
         "graph1 graph3"
     ''',
     'gap': '10px',
-    'height': '600px',
-    'width': '100%'
+    'height' : '100%'
+
 })

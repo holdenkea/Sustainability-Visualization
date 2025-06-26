@@ -1,50 +1,67 @@
 from dash import html, dcc
 from data.constants import (location_options, default_locations, 
                             unit_options, default_units, 
-                            timestamp_options, default_min_timestamp, default_max_timestamp, timestamp_marks)
+                            timestamp_options, default_min_timestamp, default_max_timestamp)
 
 # filters section
 filters = html.Div([
-    html.H4("Filters"),
+    html.H2("Filters", style={'textAlign' : 'center'}),
+
 
     html.Div([
-        html.Label("Location"),
-        dcc.Checklist(
-            id='location-filter',
-            options=location_options,
-            value=default_locations
-        )
-    ], style={'margin-bottom': '20px'}),
+        html.Div([
+            html.Label(
+                "Location", 
+                style={'fontWeight': 'bold', 'fontSize': '18px'}
+            ),
+            dcc.Checklist(
+                id='location-filter',
+                options=location_options,
+                value=default_locations,
+                labelStyle={'display': 'block', 'textAlign': 'left'}
+            )
+        ], style={'marginBottom': '40px', 'width': '85%', 'textAlign': 'left'}),
 
-    html.Div([
-        html.Label("Unit"),
-        dcc.Checklist(
-            id='unit-filter',
-            options=unit_options,
-            value=default_units
-        )
-    ]),
+        html.Div([
+            html.Label(
+                "Unit",
+                style={'fontWeight': 'bold', 'fontSize': '18px'}
+            ),
+            dcc.Checklist(
+                id='unit-filter',
+                options=unit_options,
+                value=default_units,
+                labelStyle={'display': 'block', 'textAlign': 'left'}
+            )   
+        ], style={'marginBottom': '40px', 'width': '85%', 'textAlign': 'left'}),
 
-    html.Div([
-        html.Label("Timeframe"),
-        dcc.RangeSlider(
-            id='timestamp-filter',
-            min=0,
-            max=len(timestamp_options) - 1,
-            value=[default_min_timestamp, default_max_timestamp],
-            marks=timestamp_marks,
-            allowCross=False,
-            step=None,
-            tooltip={"placement": "bottom", "always_visible": False}
-        )
-    ])
-
-    # import python data
-
-    # dcc.DatePickerRange(
-        # is_RLT=true,
-        # first_day_of_week=python.today'sdate,
-        # start_date=date
-    # )
-
-])
+        html.Div([
+            html.Label(
+                "Timeframe", 
+                style={'fontWeight': 'bold', 
+                       'fontSize': '18px', 
+                       'marginBottom': '5px'}
+            ),
+            dcc.DatePickerRange(
+                id='timestamp-filter',
+                start_date=timestamp_options[default_min_timestamp],
+                end_date=timestamp_options[default_max_timestamp],
+                min_date_allowed=min(timestamp_options),
+                max_date_allowed=max(timestamp_options),
+                style={
+                'fontSize': '9px',   
+                'width': '110%'       
+                }
+            )
+        ], style={'width': '85%', 'textAlign': 'left'})
+    ], style={
+        'display': 'flex',
+        'flexDirection': 'column',
+        'alignItems': 'center',
+        'width': '100%'
+    })
+],
+style={
+    'fontFamily': '"Manrope", "Inter", "Segoe UI", sans-serif',
+    'fontSize': '16px'
+})
