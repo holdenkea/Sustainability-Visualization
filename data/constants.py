@@ -54,7 +54,7 @@ unit_options = []
 for unit in sorted(df['unit'].unique()):
     unit_options.append({'label': unit, 'value': unit})
 
-default_units = ['electric(kWh)']
+default_units = ['Electric (kWh)']
 
 ##################################################################################################
 # timestamp options, marks (ticks), and options for filters section

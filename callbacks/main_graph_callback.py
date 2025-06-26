@@ -184,7 +184,7 @@ def update_figure2(aggregated_df):
         x='energy_usage',
         y='truncated_location',
         title='Sum of Energy Consumption by Location',
-        labels={'energy_usage': 'Sum of Value', 'location': 'Location'},
+        labels={'energy_usage': 'Sum of Value', 'truncated_location': 'Location'},
         template='plotly_white',
         hover_name='truncated_location',
         color_discrete_sequence=px.colors.sequential.Aggrnyl 
@@ -206,7 +206,8 @@ def update_figure3(aggregated_df):
         values='energy_usage',
         title='Percent of Energy Used by Location',
         hole=0.5,
-        hover_name='location'
+        hover_name='truncated_location',
+        color_discrete_sequence=px.colors.sequential.Aggrnyl
     )
 
     # display percentage values and labels
