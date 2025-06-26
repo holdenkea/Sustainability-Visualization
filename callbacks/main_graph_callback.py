@@ -1,31 +1,32 @@
 from dash import Input, Output, callback
 import plotly.express as px
 from data.csv_source import df
-from data.constants import timestamp_options, geo_json_buildings, building_centers
+from data.constants import geo_json_buildings, building_centers
 import plotly.graph_objects as go
 import numpy as np
+from datetime import datetime
 
 # helper functions
 # function to truncate names
-def truncate_name(name):
-    if "Green Music Center".lower() in name.lower():
-        return "Green Music Center"
-    elif "Ives Hall".lower() in name.lower():
-        return "Ives Hall"
-    elif "Nichols Hall".lower() in name.lower():
-        return "Nichols Hall"
-    elif "Physical Education".lower() in name.lower():
-        return "Physical Education"
-    elif "Rachel Carson Hall".lower() in name.lower():
-        return "Rachel Carson Hall"
-    elif "Student Health Center".lower() in name.lower():
-        return "Student Health Center"
-    elif "Student Center".lower() in name.lower():
-        return "Student Center"
-    elif "Wine Spectator Learning".lower() in name.lower():
-        return "Wine Spectator Center"
-    else:
-        return None
+# def truncate_name(name):
+#     if "Green Music Center".lower() in name.lower():
+#         return "Green Music Center"
+#     elif "Ives Hall".lower() in name.lower():
+#         return "Ives Hall"
+#     elif "Nichols Hall".lower() in name.lower():
+#         return "Nichols Hall"
+#     elif "Physical Education".lower() in name.lower():
+#         return "Physical Education"
+#     elif "Rachel Carson Hall".lower() in name.lower():
+#         return "Rachel Carson Hall"
+#     elif "Student Health Center".lower() in name.lower():
+#         return "Student Health Center"
+#     elif "Student Center".lower() in name.lower():
+#         return "Student Center"
+#     elif "Wine Spectator Learning".lower() in name.lower():
+#         return "Wine Spectator Center"
+#     else:
+#         return None
     
 # functions to get building center lon and lat
 def get_building_center_lon(name):
@@ -41,33 +42,34 @@ def get_building_center_lat(name):
     Output('graph3', 'figure'),
     Input('location-filter', 'value'),
     Input('unit-filter', 'value'),
-    Input('timestamp-filter', 'value'),
+    Input('timestamp-filter', 'start_date'),
+    Input('timestamp-filter', 'end_date'),
     Input('map-overlay-type', 'value')
 )
-def update_graphs(selected_locations, selected_units, selected_timestamps, overlay_type):
-
-    # unpacking tuple of selected timestamp indices and mapping to corresponding dates
-    start_idx, end_idx = selected_timestamps
-    start_date = timestamp_options[start_idx]
-    end_date = timestamp_options[end_idx]
-
+def update_graphs(selected_locations, selected_units, start_date, end_date, overlay_type):
+    # convert date str to datetime.date 
+    if start_date is not None:
+        start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+    if end_date is not None:
+        end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+    
     # filter dataframe based on filters selected
     filtered_df = df[
-        (df['location'].isin(selected_locations)) & 
+        (df['truncated_location'].isin(selected_locations)) & 
         (df['unit'].isin(selected_units)) &
         (df['date_only'] >= start_date) &
         (df['date_only'] <= end_date)
     ]
 
     if filtered_df.empty:
-        print("⚠️ Filtered DataFrame is empty — returning blank figures.")
+        print("Filtered DataFrame is empty — returning blank figures.")
         return go.Figure(), go.Figure(), go.Figure()
     
     # group by location and sum up value
-    aggregated_df = filtered_df.groupby('location', as_index=False)['energy_usage'].sum()
+    aggregated_df = filtered_df.groupby('truncated_location', as_index=False)['energy_usage'].sum()
 
     # add column of truncated location name 
-    aggregated_df['truncated_location'] = aggregated_df['location'].apply(truncate_name)
+    #aggregated_df['truncated_location'] = aggregated_df['location'].apply(truncate_name)
 
     # add columns for building center lon and lat by building
     aggregated_df['center_lon'] = aggregated_df['truncated_location'].apply(get_building_center_lon)
@@ -106,8 +108,8 @@ def update_figure1(aggregated_df, overlay_type):
         lon=[pt[1] for pt in campus_polygon],
         mode='lines',
         fill='toself',
-        fillcolor='rgba(0, 100, 255, 0.1)',
-        line=dict(color='blue'),
+        fillcolor='rgba(0, 110, 255, 0.08)',
+        line=dict(color='navy'),
         hovertext='Sonoma State University',
         hoverinfo='text'
     )
@@ -182,9 +184,10 @@ def update_figure2(aggregated_df):
         x='energy_usage',
         y='truncated_location',
         title='Sum of Energy Consumption by Location',
-        labels={'value': 'Sum of Value', 'location': 'Location'},
+        labels={'value': 'Sum of Value', 'truncated_location': 'Location'},
         template='plotly_white',
-        hover_name='location'    
+        hover_name='truncated_location',
+        color_discrete_sequence=px.colors.sequential.Aggrnyl 
     )
 
     figure2.update_layout(
@@ -203,11 +206,12 @@ def update_figure3(aggregated_df):
             values='energy_usage',
             title='Percent of Energy Used by Location',
             hole=0.5,
-            hover_name='location'
+            hover_name='truncated_location',
+            color_discrete_sequence=px.colors.sequential.Aggrnyl 
         )
 
     # display percentage values and labels
-    figure3.update_traces(textinfo='percent+label', rotation=270)
+    figure3.update_traces(textinfo='percent+label', rotation=210)
 
     figure3.update_layout(
         paper_bgcolor="#1A1A1A",

@@ -2,14 +2,50 @@ from data.csv_source import df
 import pandas as pd
 import json
 
+# Truncate location helper
+def truncate_name(name):
+    if "Green Music Center".lower() in name.lower():
+        return "Green Music Center"
+    elif "Ives Hall".lower() in name.lower():
+        return "Ives Hall"
+    elif "Nichols Hall".lower() in name.lower():
+        return "Nichols Hall"
+    elif "Physical Education".lower() in name.lower():
+        return "Physical Education"
+    elif "Rachel Carson Hall".lower() in name.lower():
+        return "Rachel Carson Hall"
+    elif "Student Health Center".lower() in name.lower():
+        return "Student Health Center"
+    elif "Student Center".lower() in name.lower():
+        return "Student Center"
+    elif "Wine Spectator Learning".lower() in name.lower():
+        return "Wine Spectator Center"
+    else:
+        return None
+
 ##################################################################################################
 # location options and defaults for filters section
-location_options = []
+# #location_options = []
 
-for location in sorted(df['location'].unique()):
-    location_options.append({'label': location, 'value': location})
+# for location in sorted(df['location'].unique()):
+#     location_options.append({'label': location, 'value': location})
 
-default_locations = df['location'].unique().tolist()
+# default_locations = df['location'].unique().tolist()
+
+df['truncated_location'] = df['location'].apply(truncate_name)
+
+location_grouped = (
+    df[df['truncated_location'].notnull()]
+    .groupby('truncated_location')['energy_usage']
+    .sum()
+    .reset_index()
+)
+
+location_options = [
+    {'label': f"{row['truncated_location']} — {row['energy_usage']:.0f} kWh", 'value': row['truncated_location']}
+    for _, row in location_grouped.iterrows()
+]
+default_locations = [opt['value'] for opt in location_options]
 
 ##################################################################################################
 # unit options and defaults for filters section
@@ -18,7 +54,7 @@ unit_options = []
 for unit in sorted(df['unit'].unique()):
     unit_options.append({'label': unit, 'value': unit})
 
-default_units = ['kWh']
+default_units = ['electric(kWh)']
 
 ##################################################################################################
 # timestamp options, marks (ticks), and options for filters section
