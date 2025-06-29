@@ -6,28 +6,6 @@ import plotly.graph_objects as go
 import numpy as np
 from datetime import datetime
 
-# helper functions
-# function to truncate names
-# def truncate_name(name):
-#     if "Green Music Center".lower() in name.lower():
-#         return "Green Music Center"
-#     elif "Ives Hall".lower() in name.lower():
-#         return "Ives Hall"
-#     elif "Nichols Hall".lower() in name.lower():
-#         return "Nichols Hall"
-#     elif "Physical Education".lower() in name.lower():
-#         return "Physical Education"
-#     elif "Rachel Carson Hall".lower() in name.lower():
-#         return "Rachel Carson Hall"
-#     elif "Student Health Center".lower() in name.lower():
-#         return "Student Health Center"
-#     elif "Student Center".lower() in name.lower():
-#         return "Student Center"
-#     elif "Wine Spectator Learning".lower() in name.lower():
-#         return "Wine Spectator Center"
-#     else:
-#         return None
-    
 # functions to get building center lon and lat
 def get_building_center_lon(name):
     return building_centers.get(name, (None, None))[1]
@@ -114,6 +92,20 @@ def update_figure1(aggregated_df, overlay_type):
         hoverinfo='text'
     )
 
+    # building name markers
+    markers_trace = go.Scattermap(
+        lon=aggregated_df['center_lon'],
+        lat=aggregated_df['center_lat'],
+        text=aggregated_df['truncated_location'],
+        mode='markers+text',
+        textposition='top center',  
+        textfont=dict(
+            color='white',
+            size=13,
+        ),
+        hoverinfo='text',
+    )
+
     if overlay_type == 'choropleth':
 
         # campus choropleth map trace
@@ -127,10 +119,11 @@ def update_figure1(aggregated_df, overlay_type):
             colorbar=dict(
                 title="Value",
                 tickfont=dict(color='white')  
-            )
+            ),
+            hovertemplate='%{z:.2f} kWh<extra></extra>'  
         )
 
-        figure1 = go.Figure(data=[choropleth_map_trace, campus_map_trace])
+        figure1 = go.Figure(data=[choropleth_map_trace, campus_map_trace, markers_trace])
 
     elif overlay_type == 'bubble':
 
@@ -150,7 +143,7 @@ def update_figure1(aggregated_df, overlay_type):
         bubble_map_trace = go.Scattermap(
             lon=aggregated_df['center_lon'],
             lat=aggregated_df['center_lat'],
-            text=aggregated_df['truncated_location'],
+            text=aggregated_df['energy_usage'].apply(lambda x: f"{x:.2f} kWh"),
             mode='markers',
             marker=dict(
                 size=bubble_size,
@@ -159,10 +152,11 @@ def update_figure1(aggregated_df, overlay_type):
                 opacity=0.7,
                 colorbar=dict(title='Value',
                               tickfont=dict(color='white'),
-                              )
-            )
+                )
+            ),
+            hoverinfo='text'
         )
-        figure1 = go.Figure(data=[bubble_map_trace, campus_map_trace])
+        figure1 = go.Figure(data=[bubble_map_trace, campus_map_trace, markers_trace])
 
     figure1.update_layout(
         map=dict(

@@ -44,4 +44,4 @@ else:
 if 'electric_or_gas' in df.columns:
     df['unit'] = np.where(df['electric_or_gas'].to_numpy() == 0, 'electric(kWh)', 'gas(kWh)')
 else:
-    print("⚠️ electric_or_gas column not found")
+    print("electric_or_gas column not found")
