@@ -5,29 +5,30 @@ from layouts.homepage.graphs_layout import graphs
 from layouts.homepage.filters import filters
 
 layout = html.Div([
+
+    # title bar
     html.H1("SSU Energy Usage", style={
             'fontFamily': '"Orbitron", "Segoe UI", sans-serif',
             'textAlign': 'left',
             'marginLeft': '50px',  
-            'marginTop': '10px',
+            'marginTop': '0px',
             'marginBottom': '10px',
-            'height': '50px'
-        }),
+    }),
 
-    # flex container for main dashboards (left), and sidebar (right)
+    # main homepage
     html.Div([
         
-         # filters section
+         # filters section of main page
         html.Div(filters, id='filters-sidebar', style={
             'flex' : '1', 
             'padding' : '10px', 
             'backgroundColor' : "#1B1B1B",
-            'height' : '100vh',
+            'height' : '97.7vh',
             'overflowY' : 'auto'
             
         }),
 
-        # graphs section
+        # graphs section of main page
         html.Div(graphs, style={
             'flex' : '4',
             'padding' : '10px', 
@@ -41,10 +42,17 @@ layout = html.Div([
         'flexDirection' : 'row', 
         'width' : '100%',
         'height' :'100%'
-    }) 
+    }),
+
+    # bottom border 
+    html.Div(style={
+        'height': '50px',                    
+        'width': '100%',                    
+    }),
 ],
 style={
-    'backgroundColor': "#171441",  
+    'backgroundColor': "#274377",  
     'color': 'white',    
-    'height': '100vh'
+    'minHeight': '100vh',
 })
+

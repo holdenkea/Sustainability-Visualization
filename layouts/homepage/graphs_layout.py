@@ -11,25 +11,11 @@ graph3 = dcc.Graph(id='graph3', style={'height': '100%', 'width' : '100%', 'maxW
 
 graphs = html.Div([
 
-    # button to toggle sidebar start position
-    html.Button("Map Settings", id="map-sidebar-btn", n_clicks=0, style={
-        'position': 'absolute',
-        'left' : '390px',
-        'top' : '93px',
-        'height': '50px',
-        'backgroundColor': "#2a3f5c",
-        'color': 'white',
-        'cursor': 'pointer',
-        'boxShadow': '0 2px 6px rgba(0,0,0,0.3)',
-        'zIndex': '1001',
-        'transition': 'right 0.3s ease',
-    }),
-
-    # graph 1 and sidebar
+    # graph 1 
     html.Div([
 
+        # map settings sidebar information
         html.Div([
-
             html.Label("Map Overlay Type"),
             dcc.RadioItems(
                 id='map-overlay-type',
@@ -48,11 +34,26 @@ graphs = html.Div([
             'opacity': '0',
             'backgroundColor' : "#242430"
         }),
-        html.Div(graph1, style={
-                'flex': 1,
-                'minWidth': 0
-            }
-        )
+
+        # map settings button and graph1 
+        html.Div([
+        html.Button("Map Settings", id="map-sidebar-btn", n_clicks=0, style={
+            'position': 'absolute',
+            'top': '10px',
+            'left': '10px',
+            'height': '40px',
+            'backgroundColor': "#2a3f5c",
+            'color': 'white',
+            'cursor': 'pointer',
+            'boxShadow': '0 2px 6px rgba(0,0,0,0.3)',
+            'zIndex': '10'
+        }),
+        graph1
+        ], style={
+            'position': 'relative',
+            'flex': 1,
+            'minWidth': 0
+        })
 
     ], style={
         'gridArea': 'graph1',

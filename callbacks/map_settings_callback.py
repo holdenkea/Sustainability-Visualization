@@ -10,6 +10,8 @@ from dash import Input, Output, State, callback
 def toggle_sidebar(n_clicks, sidebar_style):
     base_sidebar_style = {
         'position': 'absolute',
+        'top': '80px',
+        #'left': '180px',
         'padding': '10px',
         'backgroundColor': "#353539",
         'overflow': 'hidden',
@@ -19,16 +21,13 @@ def toggle_sidebar(n_clicks, sidebar_style):
 
     base_button_style = {
         'position': 'absolute',
-        'top': '80px',
-        'width': '100px',
-        'height': '50px',
-        'backgroundColor': '#2a3f5c',
+        'top': '10px',
+        'height': '40px',
+        'backgroundColor': "#2a3f5c",
         'color': 'white',
-        'border': 'none',
-        'padding': '8px 12px',
         'cursor': 'pointer',
         'boxShadow': '0 2px 6px rgba(0,0,0,0.3)',
-        'zIndex': '1100',
+        'zIndex': 1100,
         'transition': 'left 0.3s ease',
     }
 
@@ -42,9 +41,9 @@ def toggle_sidebar(n_clicks, sidebar_style):
         }
         button_style = {
             **base_button_style,
-            'left': '520px',  
-            'top' : '93px'
+            'left': '220px'
         }
+   
     else:
         # Sidebar closed
         sidebar_style = {
@@ -55,8 +54,8 @@ def toggle_sidebar(n_clicks, sidebar_style):
         }
         button_style = {
             **base_button_style,
-            'left': '390px',  
-            'top' : '93px'
+            'left': '10px'
         }
+  
 
     return sidebar_style, button_style

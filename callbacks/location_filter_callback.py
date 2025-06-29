@@ -34,8 +34,13 @@ def update_location_options(selected_units, start_date, end_date):
     grouped = filtered.groupby('truncated_location')['energy_usage'].sum().reset_index()
 
     # options list with labels that include energy usage
+    #options = [
+    #    {'label': f"{row['truncated_location']} — {row['energy_usage']:.0f} kWh", 'value': row['truncated_location']}
+    #    for _, row in grouped.iterrows()
+    #]
+
     options = [
-        {'label': f"{row['truncated_location']} — {row['energy_usage']:.0f} kWh", 'value': row['truncated_location']}
+        {'label': f"{row['truncated_location']}", 'value': row['truncated_location']}
         for _, row in grouped.iterrows()
     ]
 

@@ -58,7 +58,7 @@ filters = html.Div([
         'display': 'flex',
         'flexDirection': 'column',
         'alignItems': 'center',
-        'width': '100%'
+        'width': '100%',
     })
 ],
 style={
