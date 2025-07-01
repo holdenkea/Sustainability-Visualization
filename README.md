@@ -1,17 +1,13 @@
-app.py - initializes Dash server
+To run:
 
-index.py - main file that runs the app and combines all components
+# create venv
+python -m venv dash_venv
 
-layouts/
-    - home_layout.py - home UI definitions, calls all of the frontent components in layouts
-    - filters.py - the sidebar for filtering graph options
+# activate venv
+.\dash_venv\Scripts\Activate
 
-callbacks/
-    - graph_callbacks.py - graph functions called by user interaction
+# install dependencies
+pip install -r requirements.txt
 
-data/
-    - csv_source.py - reads csv file using pandas
-    - normalized_data4.csv - csv data file
-
-Docs
-    - link to dcc docs - https://dash.plotly.com/dash-core-components
+# run 
+python index.py
