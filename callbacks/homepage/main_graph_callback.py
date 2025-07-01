@@ -97,6 +97,7 @@ def update_figure1(aggregated_df, overlay_type):
         lon=aggregated_df['center_lon'],
         lat=aggregated_df['center_lat'],
         text=aggregated_df['truncated_location'],
+        customdata=aggregated_df['truncated_location'],
         mode='markers+text',
         textposition='top center',  
         textfont=dict(
@@ -205,7 +206,7 @@ def update_figure3(aggregated_df):
         )
 
     # display percentage values and labels
-    figure3.update_traces(textinfo='percent+label', rotation=210)
+    figure3.update_traces(textinfo='percent+label', rotation=300)
 
     figure3.update_layout(
         paper_bgcolor="#1A1A1A",
