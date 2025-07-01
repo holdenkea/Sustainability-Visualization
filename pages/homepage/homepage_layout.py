@@ -1,13 +1,15 @@
-from dash import html
+from dash import html, register_page
 
 # layout imports
-from layouts.homepage.graphs_layout import graphs
-from layouts.homepage.filters import filters
+from pages.homepage.graphs_layout import graphs
+from pages.homepage.filters import filters
+
+register_page(__name__, path='/')
 
 layout = html.Div([
 
     # title bar
-    html.H1("SSU Energy Usage", style={
+    html.H1("Energy Dashboard", style={
             'fontFamily': '"Orbitron", "Segoe UI", sans-serif',
             'textAlign': 'left',
             'marginLeft': '50px',  
